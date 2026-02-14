@@ -51,22 +51,22 @@ public class Shooternf implements Subsystem {
 //    }
     public Command closeSide() {
         currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(closeShooterController, -1210).requires(shooter);
+        return new RunToVelocity(closeShooterController, -1210, 10).requires(shooter);
     }
 
     public Command farSide() {
         currentControllerMode = ShooterControllerMode.FAR;
-        return new RunToVelocity(farShooterController, -1450).requires(shooter);
+        return new RunToVelocity(farShooterController, -1450, 10).requires(shooter);
     }
 
     public Command idle() {
         currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(closeShooterController, 0).requires(shooter);
+        return new RunToVelocity(closeShooterController, 0, 10).requires(shooter);
     }
 
     public Command setShooterVel(double shooterVel) {
         currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(closeShooterController, shooterVel).requires(shooter);
+        return new RunToVelocity(closeShooterController, shooterVel, 10).requires(shooter);
     }
 
     public Command setShooterVel(double shooterVel, boolean farSide) {
