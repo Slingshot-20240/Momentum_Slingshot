@@ -1,0 +1,129 @@
+package org.firstinspires.ftc.teamcode.NextFTC.subsystems_nf;
+
+import com.pedropathing.paths.PathChain;
+
+import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.delays.WaitUntil;
+import dev.nextftc.core.commands.groups.ParallelGroup;
+import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
+import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.hardware.impl.CRServoEx;
+import dev.nextftc.hardware.powerable.SetPower;
+
+public class Transfernf implements Subsystem {
+    public static final Transfernf INSTANCE = new Transfernf();
+    private Transfernf() {}
+
+    public CRServoEx frontTransfer;
+    public CRServoEx backTransfer;
+
+    public Command on() {
+        return new ParallelGroup(
+                new SetPower(frontTransfer, -0.8), // DO NOT CHANGE NO MATTER WHAT!!! esp before round
+                new SetPower(backTransfer, -1.0)
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+    public Command gateIntake() {
+        return new SequentialGroup(
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -0.2),
+                        new SetPower(backTransfer, -1.0)
+                ),
+                new Delay(0.2),
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -0.15),
+                        new SetPower(backTransfer, -1.0)
+                )
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+    public Command stepOn() {
+        return new SequentialGroup(
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -0.5),
+                        new SetPower(backTransfer, -1.0)
+                ),
+                new Delay(0.3),
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -1.0),
+                        new SetPower(backTransfer, -1.0)
+                )
+
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+    public Command stepOn(double maxPower) {
+        return new SequentialGroup(
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -0.5),
+                        new SetPower(backTransfer, -1.0)
+                ),
+                new Delay(0.2),
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -maxPower),
+                        new SetPower(backTransfer, -1.0)
+                )
+
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+    public Command pickup(PathChain pathChain, double distanceForHotdog) {
+        return new SequentialGroup(
+                new ParallelGroup(
+                        new SetPower(frontTransfer, -0.4),
+                        new SetPower(backTransfer, -1)
+                ),
+                new WaitUntil(() -> pathChain.lastPath().getDistanceRemaining() < distanceForHotdog),
+                hotdog()
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+    public Command hotdog() {
+        return new ParallelGroup(
+                new SetPower(frontTransfer, -0.12),// DO NOT CHANGE NO MATTER WHAT!!! esp before round
+                new SetPower(backTransfer, 1.0)
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+    public Command onInstant() {
+        return new ParallelGroup(
+                new InstantCommand(() -> frontTransfer.setPower(-1)),
+                new InstantCommand(() -> backTransfer.setPower(1))
+        );
+    }
+
+    public Command slowHotdog() {
+        return new ParallelGroup(
+                new SetPower(frontTransfer, -0.07),
+                new SetPower(backTransfer, 1.0)
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+
+    public Command idle() {
+        return new ParallelGroup(
+                new SetPower(frontTransfer, 0),
+                new SetPower(backTransfer, 0)
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+    public Command forceBackOn() {
+        return new ParallelGroup(
+                new SetPower(backTransfer, -1.0)
+        ).addRequirements(frontTransfer,backTransfer);
+    }
+
+
+
+    @Override
+    public void initialize() {
+        frontTransfer = new CRServoEx("transferF");
+        backTransfer = new CRServoEx("transferB");
+    }
+
+    @Override
+    public void periodic() {
+
+    }
+}
