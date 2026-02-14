@@ -92,28 +92,25 @@ public class NikethTele extends OpMode {
 //        }
 
 
-        if (gamepad1.a) {
+        if (gamepad1.right_trigger >= 0.4) {
             rotate = visionBearing * kP;
         } else {
             rotate = -Math.pow(gamepad1.right_stick_x, 5);
         }
         rotate = Math.max(-1.0, Math.min(1.0, rotate));
 
-        if (gamepad1.right_bumper) {
+        if (gamepad1.left_stick_button) {
             follower.setTeleOpDrive(forward, strafe, rotate, true);
         } else {
             follower.setTeleOpDrive(forward, 0, rotate, true);
         }
 
+    //Rumble Settings
         if (Math.abs(visionError) < 1) {
             gamepad1.rumble(1.0, 1.0, Gamepad.RUMBLE_DURATION_CONTINUOUS);
         } else {
             gamepad1.stopRumble();
         }
-
-
-
-
 
 
 

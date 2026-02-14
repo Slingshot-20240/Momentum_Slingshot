@@ -55,21 +55,21 @@ public class GamepadMapping {
         //Niketh controls
         joystickUpdate();
         // INTAKE
-        intake.update(gamepad1.left_trigger >= 0.5);
+        intake.update(gamepad1.leftBumperWasPressed());
 
-        // SHOOTER
-        shootBack.update(gamepad1.left_trigger >= 0.5);
+////         SHOOTER
+//        shootBack.update(gamepad1.left_trigger >= 0.5);
         shootFront.update(gamepad1.right_bumper);
 
         // TRANSFER
-        transfer.update(gamepad1.left_bumper);
+        transfer.update(gamepad1.right_bumper);
 
         // OUTTAKE
-        outtake.update(gamepad1.left_bumper);
+        outtake.update(gamepad1.left_trigger >= 0.4);
 
         // MISC
         switchMode.update(gamepad1.dpad_down);
-        park.update(gamepad1.dpad_up);
+        park.update(gamepad1.x);
     }
 
     public void resetMultipleControls(Toggle... toggles) {
