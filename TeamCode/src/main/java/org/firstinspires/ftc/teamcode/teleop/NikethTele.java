@@ -76,8 +76,6 @@ public class NikethTele extends OpMode {
         double strafe  = -Math.pow(gamepad1.left_stick_x, 5);
         double rotate;
 
-
-
 //        //TODO - try holding and also pressing
 //        if (gamepad1.aWasPressed()) {
 //            follower.turn(Math.toRadians(visionBearing));
@@ -86,12 +84,13 @@ public class NikethTele extends OpMode {
 //            if (gamepad1.right_bumper) {
 //                follower.setTeleOpDrive(forward, strafe, rotate, true);
 //            } else {
-//                follower.setTeleOpDrive(forward,0, rotate, true);
+//                follower.setTeleOpDrive(forward, 0, rotate, true);
 //            }
 //
 //        }
 
 
+    //Auto Align
         if (gamepad1.right_trigger >= 0.4) {
             rotate = visionBearing * kP;
         } else {
@@ -99,6 +98,7 @@ public class NikethTele extends OpMode {
         }
         rotate = Math.max(-1.0, Math.min(1.0, rotate));
 
+    //Tank-Mecanum Override
         if (gamepad1.left_stick_button) {
             follower.setTeleOpDrive(forward, strafe, rotate, true);
         } else {
